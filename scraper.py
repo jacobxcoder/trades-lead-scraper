@@ -37,7 +37,7 @@ def main():
     );
 
     args = parser.parse_args()
-   
+ 
     cities = args.cities
 
     for city in cities:
@@ -45,11 +45,7 @@ def main():
             logger.error('Wrong city provided: \"' + city + '\" is not on our list of US cities.')
             raise ValueError('Wrong city provided: \"' + city + '\" is not on our list of US cities.')
 
-    print('trades type: ', type(args.trade))
-    print('cities type: ', type(cities))
-
-    print('Trade: ', args.trade)
-    print('Cities list: ', cities)
-
+    logger.success('All cities provided are correct.')
+    logger.info('Starting to scrape the web for potential leads \n\t- for the trade: ' + args.trade + '\n\t- in the following cities: ' + ', '.join(cities))
 if __name__ == '__main__':
     main()
