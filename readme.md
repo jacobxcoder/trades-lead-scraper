@@ -1,6 +1,7 @@
 # CLI Trades Leads Scraping
 
-[!IMPORTANT] Currently in development. Not yet ready to use.
+> [!IMPORTANT]
+> Currently in development. Not yet ready to use.
 
 This is a simple CLI application which uses Python (`requests`, `beautifulsoup4`, `pandas`) to scrape and process leads list, specifically for "trades" in the US.
 
@@ -15,8 +16,8 @@ The scraped list could be used for cold outreach.
 - `--cities` (shortcut `-c`) - a list of US cities to scrape from
 - `--trade` (shortcut `-t`) - what trade are you interested in? (currently available: `plumber`)
 
-[!NOTE]
-The list of US cities has been taken from the following source: https://github.com/grammakov/USA-cities-and-states
+> [!NOTE]
+> The list of US cities has been taken from the following source: https://github.com/grammakov/USA-cities-and-states
 
 ## Example of usage
 
@@ -44,5 +45,5 @@ Run the scraper:
 python scraper.py --trades=plumber --cities=Miami California
 ```
 
-[!IMPORTANT]
-Before scraping and using a list with this tool, make sure that you're following the law :) I do not take any responsibility for the usage of this, this is just a basic tool for me to learn web scraping in Python.
+> [!IMPORTANT]
+> Before scraping and using a list with this tool, make sure that you're following the law :) I do not take any responsibility for the usage of this, this is just a basic tool for me to learn web scraping in Python.
