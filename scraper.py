@@ -6,6 +6,22 @@ from bs4 import BeautifulSoup
 
 us_cities_df = pd.read_csv('./us_cities.csv', sep='|')
 
+# columns to scrape / return 
+columns = [
+    'no',
+    'name',
+    'phone',
+    'email',
+    'city',
+    'state',
+    'country'
+]
+
+# initialize an output dataframe
+output_df = pd.DataFrame(
+    columns = columns 
+)
+
 def get_leads_yelp(trade, city, state, country='USA'):
     if country != 'USA':
         logger.error('This script is designed to work only in the US (for now). Please provide a valid country.')
@@ -27,19 +43,23 @@ def get_leads_yelp(trade, city, state, country='USA'):
 
     html_item_cards = soup.select('[data-testid="scrollable-photos-card"]')
 
-    items = []
     for html_item_card in html_item_cards:
-        item = {}
-
         # scraping logic
         name = html_item_card.select_one('h3 a').text
         url = 'https://www.yelp.com' + html_item_card.select_one('h3 a').attrs['href']
 
-        item['name'] = name 
-        item['url'] = url 
+        global output_df
+        output_df = pd.concat([output_df, pd.DataFrame([{
+            'no': output_df.shape[0],
+            'name': name,
+            'phone': 'not yet implemented',
+            'email': 'not yet implemented',
+            'city': city,
+            'state': state,
+            'country': country
+        }])], ignore_index = True)
 
-        logger.info('Found a lead: ' + name + ' with ' + ' URL: ' + url)
-        items.append(item)
+        # logger.info('Found a lead: ' + name + ' with ' + ' URL: ' + url)
 
 
 def main():
@@ -73,7 +93,6 @@ def main():
     locations = args.location
 
     for location in locations:
-        print(location)
         # my intuition tells me that there's a cleaner way to write this
         # also, add a try/catch block to this
         _city = location.split(',')[0]
@@ -93,6 +112,7 @@ def main():
         _state = location.split(',')[1] 
         logger.info('Fetching leads for the trade: ' + args.trade + ' in the city: ' + _city + ', ' + _state)
         get_leads_yelp(args.trade, _city, _state)
+        output_df.to_csv('result.csv')
 
 
 if __name__ == '__main__':
