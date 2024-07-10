@@ -13,7 +13,7 @@ columns = ["no", "name", "phone", "email", "city", "state", "country"]
 output_df = pd.DataFrame(columns=columns)
 
 
-def get_leads_yelp(trade, city, state, country="USA"):
+def get_leads_yelp(trade, city, state, country="USA", max_page=3):
     if country != "USA":
         logger.error(
             "This script is designed to work only in the US (for now). Please provide a valid country."
@@ -26,42 +26,58 @@ def get_leads_yelp(trade, city, state, country="USA"):
         trade=trade, city=city, state=state, country=country
     )
 
-    logger.info("Fetching Yelp page from the URL: " + url)
-    page = requests.get(url)
-    if page.status_code != 200:
-        logger.error("Failed to fetch the Yelp page. Status code: " + page.status_code)
+    page_index = 1
 
-    soup = BeautifulSoup(page.content, "html.parser")
+    while url:
+        page = requests.get(url)
 
-    html_item_cards = soup.select('[data-testid="scrollable-photos-card"]')
+        if page.status_code != 200:
+            logger.error(
+                "Failed to fetch the Yelp page. Status code: " + page.status_code
+            )
 
-    for html_item_card in html_item_cards:
-        # scraping logic
-        name = html_item_card.select_one("h3 a").text
-        url = "https://www.yelp.com" + html_item_card.select_one("h3 a").attrs["href"]
+        soup = BeautifulSoup(page.content, "html.parser")
+        html_item_cards = soup.select('[data-testid="scrollable-photos-card"]')
 
-        global output_df
-        output_df = pd.concat(
-            [
-                output_df,
-                pd.DataFrame(
-                    [
-                        {
-                            "no": output_df.shape[0],
-                            "name": name,
-                            "phone": "not yet implemented",
-                            "email": "not yet implemented",
-                            "city": city,
-                            "state": state,
-                            "country": country,
-                        }
-                    ]
-                ),
-            ],
-            ignore_index=True,
-        )
+        for html_item_card in html_item_cards:
+            # scraping logic
+            name = html_item_card.select_one("h3 a").text
+            url = (
+                "https://www.yelp.com" + html_item_card.select_one("h3 a").attrs["href"]
+            )
 
-        # logger.info('Found a lead: ' + name + ' with ' + ' URL: ' + url)
+            global output_df
+            output_df = pd.concat(
+                [
+                    output_df,
+                    pd.DataFrame(
+                        [
+                            {
+                                "no": output_df.shape[0],
+                                "name": name,
+                                "phone": "not yet implemented",
+                                "email": "not yet implemented",
+                                "city": city,
+                                "state": state,
+                                "country": country,
+                            }
+                        ]
+                    ),
+                ],
+                ignore_index=True,
+            )
+
+        next_link_btn = soup.select_one('a.next-link[aria-label="Next"]')
+
+        if not next_link_btn or page_index > max_page:
+            logger.success("Fetched all the pages sucessfully. Ending the process.")
+            url = False
+            break
+
+        url = next_link_btn.attrs["href"]
+        logger.success("Fetched page " + str(page_index) + ". Moving to the next one.")
+
+        page_index += 1
 
 
 def main():
