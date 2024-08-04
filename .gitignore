@@ -1,3 +1,2 @@
-.venv
 results/**
-result.csv
+node_modules

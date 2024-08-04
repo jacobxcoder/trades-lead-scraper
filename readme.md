@@ -3,6 +3,9 @@
 > [!IMPORTANT]
 > Currently in development. Not yet ready to use.
 
+> [!IMPORTANT]
+> This branch is a Puppeteer-based solution with JavaScript - to handle Google Maps. The full readme description is soon to be provided for it.
+
 This is a simple CLI application which uses Python (`requests`, `beautifulsoup4`, `pandas`) to scrape and process leads list, specifically for "trades" in the US.
 
 ## Why use this tool?
