@@ -5,3 +5,11 @@ export interface Location {
   state: string;
   country: string;
 }
+
+export interface Business {
+  name?: string;
+  address?: string;
+  phone?: string;
+  website?: string;
+  email?: string;
+}

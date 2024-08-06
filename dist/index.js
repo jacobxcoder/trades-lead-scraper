@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const commander_1 = require("commander");
-const logger_1 = __importDefault(require("$/logger"));
-const google_maps_1 = __importDefault(require("$/google-maps"));
+const logger_1 = __importDefault(require("$/utils/logger"));
+const google_maps_1 = __importDefault(require("$/scrapers/google-maps"));
 const program = (0, commander_1.createCommand)();
 program
     .name('trades-leads-scraper')
@@ -25,6 +25,6 @@ async function scrape() {
     const result = await (0, google_maps_1.default)(options.trade, {
         city: options.city,
         state: options.state,
-        country: options.country,
+        country: options.country
     });
 }

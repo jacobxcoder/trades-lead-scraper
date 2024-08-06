@@ -4,6 +4,7 @@
   "description": "A CLI tool to scrape a list of carpenters leads from Google Maps.",
   "main": "scraper.js",
   "scripts": {
+    "test": "vitest",
     "watch": "tsc --watch",
     "scrape": "ts-node -r tsconfig-paths/register ./src/index.ts"
   },
@@ -23,7 +24,8 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.0.0",
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "commander": "^12.1.0",

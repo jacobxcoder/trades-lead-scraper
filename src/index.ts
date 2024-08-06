@@ -1,6 +1,6 @@
 import { createCommand } from 'commander';
-import log from '$/logger';
-import scrapeGoogleMaps from '$/google-maps';
+import log from '$/utils/logger';
+import scrapeGoogleMaps from '$/scrapers/google-maps';
 
 const program = createCommand();
 
@@ -13,20 +13,26 @@ program
   .requiredOption('--city <string>', 'City to scrape data from')
   .requiredOption('--state <string>', 'State to scrape data from')
   .requiredOption('--country <string>', 'Country to scrape data from', 'USA')
-  .requiredOption('--trade <string>', 'Currently available trades: carpenters', 'carpenters')
+  .requiredOption(
+    '--trade <string>',
+    'Currently available trades: carpenters',
+    'carpenters'
+  )
   .option('-o, --output <string>', 'Output file name');
 
 program.parse();
 
 const options = program.opts();
 
-log.start(`Options parsed correctly. Fetching all ${options.trade} for ${options.city}, ${options.state}.`);
+log.start(
+  `Options parsed correctly. Fetching all ${options.trade} for ${options.city}, ${options.state}.`
+);
 scrape();
 
 async function scrape() {
   const result = await scrapeGoogleMaps(options.trade, {
     city: options.city,
     state: options.state,
-    country: options.country,
+    country: options.country
   });
 }
